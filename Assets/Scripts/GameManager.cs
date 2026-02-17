@@ -24,5 +24,5 @@ public class GameManager : MonoBehaviour
 
     #endregion
     
-    public UnityEvent<Vector2> onLocationSelected = new UnityEvent<Vector2>();
+    public UnityEvent<Vector2, Interactable> onLocationSelected = new UnityEvent<Vector2, Interactable>();
 }

@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private static readonly int IsWalking = Animator.StringToHash("IsWalking");
+    
     [SerializeField, Tooltip("This is inverse, smaller number is faster")] private float moveSpeed;
+    [SerializeField] private Animator anim;
 
     private void OnEnable()
     {
@@ -16,8 +19,18 @@ public class PlayerController : MonoBehaviour
         GameManager.Instance.onLocationSelected.RemoveListener(MovePlayer);
     }
 
-    private void MovePlayer(Vector2 location)
+    private void MovePlayer(Vector2 location, Interactable interactable)
     {
-        transform.DOMove(location, moveSpeed).SetEase(Ease.Linear);
+        anim.SetBool(IsWalking, true);
+        transform.DOMove(location, moveSpeed).SetEase(Ease.Linear)
+            .OnComplete(() =>
+            {
+                anim.SetBool(IsWalking, false);
+
+                if (interactable != null)
+                {
+                    interactable.Interact();
+                }
+            });
     }
 }
